@@ -1,1 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <title>Ai Assistent</title>
+    <style>
+      #chat-container {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        z-index: 9999;
+      }
+      #chat-button {
+        width: 60px;
+        height: 60px;
+        background-color: #333;
+        color: white;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-bottom: 20px;
+        margin-right: 20px;
+        font-size: 25px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      }
+      #chat-box {
+        display: none;
+        position: fixed;
+        bottom: 140px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        background-color: white;
+        border-radius: 3px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        font-family: Arial, sans-serif;
+      }
+      #chat-header {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 5px 5px 0 0;
+      }
+      #chat-header h3 {
+        margin: 0;
+      }
+      #close-chat {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      #chat-body {
+        height: 300px;
+        overflow-y: scroll;
+        padding: 10px;
+      }
+      #chat-messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #chat-messages li {
+        margin-bottom: 10px;
+      }
+      #chat-messages li strong {
+        font-weight: bold;
+      }
+      #chat-footer {
+        background-color: #f2f2f2;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 0 0 5px 5px;
+      }
+      #chat-input {
+        flex: 1;
+        margin-right: 10px;
+        padding: 5px;
+        border-radius: 3px;
+        border: none;
+        white-space: pre-wrap;
+      }
+      #chat-submit {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      #chat-submit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .input-field {
+        flex: 1;
+        margin-right: 10px;
+        padding: 5px;
+        border-radius: 3px;
+        border: none;
+        white-space: pre-wrap;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333;
+        background-color: #f2f2f2;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        outline: none;
+      }
+      .input-field:focus {
+        background-color: #fff;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      #chat-box #settings-menu {
+        display: none;
+        position: fixed;
+        bottom: 140px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        background-color: white;
+        border-radius: 3px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        font-family: Arial, sans-serif;
+      }
+      #chat-box #settings-menu header {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 5px 5px 0 0;
+      }
+      #chat-box #settings-menu h3 {
+        margin: 0;
+      }
+      #settings-footer {
+        background-color: #f2f2f2;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 0 0 5px 5px;
+      }
+      #settings-body {
+        height: 300px;
+        overflow-y: scroll;
+        padding: 10px;
+      }
+      #settings-body input {
+        margin-bottom: 10px;
+      }
+      #settings-body label {
+        font-size: 10px;
+      }
+      #close-settings {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      #open-settings {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      #settings-body p[id=settigns-text-top]{
+        font-size: 15px;
+      }
+      #settings-body p[id=settigns-text-bottom]{
+        font-size: 15px;
+        padding-bottom: 70px;
+      }
+      #settings-body p[id=credits]{
+        font-size: 8px;
+        padding-left: 70px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+        <div id="chat-container">
+        <div id="chat-button">
+          <i class="fa fa-comments"></i>
+        </div>
+        <div id="chat-box">
+          <div id="chat-header">
+            <h3>Chat with ChatGPT</h3>
+            <button id="open-settings"><i class="fa fa-cog"></i></button>
+            <button id="close-chat"><i class="fa fa-times"></i></button>
+          </div>
+          <div id="chat-body">
+            <ul id="chat-messages"></ul>
+          </div>
+          <div id="settings-menu">
+            <header>
+              <h3>Settings</h3>
+              <button id="close-settings"><i class="fa fa-times"></i></button>
+            </header>
+            <div id="settings-body">
+              <ul>
+                <p id=settigns-text-top><strong>------------</strong>Max Tokens<strong>------------</strong></p>
+                <input type="number" id="max-tokens-input" class="input-field" placeholder="Max Tokens" value="50" min="8" max="4069"> <br>
+                <label for="max-tokens-input">In the OpenAI GPT-3.5-based ChatGPT API, the <strong>Max Tokens</strong> parameter defines the maximum number of tokens the API response should contain. <br> [<strong>Standard:</strong> 50, <strong>Min:</strong> 8, <strong>Max:</strong> 4069, <strong>Current:</strong> ]</label>
+                <p id=settigns-text-bottom><strong>-----------------------------------------</strong></p>
+                <p id="credits">Made by Ortr</p>
+                <!-- add more settings options here -->
+              </ul>
+            </div>
+            <div id="settings-footer"></div>
+          </div>
+          <div id="chat-footer">
+            <form id="chat-form">
+              <input type="text" id="chat-input" class="input-field" placeholder="Type your message" autocomplete="off" />
+              <button type="submit" id="chat-submit-btn" disabled><i class="fa fa-paper-plane"></i></button>
+            </form>
+          </div>
+          </div>
+          </div>
+          </header>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+          <script>
+            const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
+            const CHATGPT_API_KEY = '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';
+            const maxTokensInput = document.getElementById('max-tokens-input');
+            const label = document.querySelector('label[for="max-tokens-input"]');
+            label.innerHTML = `In the OpenAI GPT-3.5-based ChatGPT API, the <strong>Max Tokens</strong> parameter defines the maximum number of tokens the API response should contain. <br> [<strong>Standard:</strong> 50, <strong>Min:</strong> 8, <strong>Max:</strong> 4069, <strong>Current:</strong> ${maxTokensInput.value}]`;
+            maxTokensInput.addEventListener('input', function() {
+              label.innerHTML = `In the OpenAI GPT-3.5-based ChatGPT API, the <strong>Max Tokens</strong> parameter defines the maximum number of tokens the API response should contain. <br> [<strong>Standard:</strong> 50, <strong>Min:</strong> 8, <strong>Max:</strong> 4069, <strong>Current:</strong> ${maxTokensInput.value}]`;
+            });
+      $(document).ready(function() {
+        $('#chat-submit-btn').prop('disabled', false);
+        // Open or close chat box when chat button is clicked
+        $('#chat-button').click(function() {
+            $('#chat-box').fadeToggle();
+        });
+        // Close chat box when close button is clicked
+        $('#close-chat').click(function() {
+            $('#chat-box').fadeOut();
+        });
+        // Close chat box when user clicks outside of it
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('#chat-container').length) {
+                $('#chat-box').fadeOut();
+            }
+        });
+        // Show settings menu when open button is clicked
+        $('#open-settings').click(function() {
+          $('#settings-menu').fadeIn();
+        });
 
+        // Hide settings menu when close button is clicked
+        $('#settings-menu #close-settings').click(function() {
+          $('#settings-menu').fadeOut();
+        });
+
+        // Hide settings menu when user clicks outside of it
+        $(document).on('click', function(event) {
+          if (!$(event.target).closest('#settings-menu, #open-settings').length) {
+            $('#settings-menu').fadeOut();
+          }
+        });
+        // Submit chat message when form is submitted
+        $('#chat-form').submit(function(event) {
+          event.preventDefault();
+          // Get user input
+          var question = document.getElementById('chat-input').value.trim();
+          // Check if message is empty
+          if (!question) {
+            return; // Don't submit empty messages
+          }
+          // Show user input in chat box
+          $('#chat-messages').append('<li><strong>You:</strong> ' + question + '</li>');
+          // Clear input field
+          document.getElementById('chat-input').value = '';
+          // Disable submit button
+          $('#chat-submit-btn').prop('disabled', true);
+          // Submit question to ChatGPT API here and display the answer in the chat box
+          $.ajax({
+            url: CHATGPT_API_URL,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + CHATGPT_API_KEY
+            },
+            method: 'POST',
+            data: JSON.stringify({
+              model: 'text-davinci-003',
+              prompt: question,
+              max_tokens: $('#max-tokens-input').val() !== '' ? $('#max-tokens-input').val() : 50 // Use the value of the input field or 50 if empty
+            }),
+            success: function (response) {
+              var answer = response.choices[0].text.trim();
+              $('#chat-messages').append('<li><strong>ChatGPT:</strong> ' + answer + '</li>');
+              // Enable submit button again
+              $('#chat-submit-btn').prop('disabled', false);
+            },
+            /*error: function (xhr, textStatus, errorThrown) {
+              console.error(errorThrown);
+            }*/
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
