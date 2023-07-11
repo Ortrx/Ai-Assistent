@@ -9,7 +9,7 @@ This is a simple Ai Assistent, wich you can add to your website. It works with C
 1. Download the code with this command:
 
 ```bash
-  git clone https://github.com/Ortrx/Ai-Assistent.git
+git clone https://github.com/Ortrx/Ai-Assistent.git
 ``` 
 or simply donwload the .zip file.
 
