@@ -19,6 +19,7 @@ or simply donwload the .zip file.
 const CHATGPT_API_KEY = 'YOUR_API_KEY';
 ```
 with your Open Ai Api Key. I'm poor sorry :( 
+
 If you don't have one you can get it here: https://platform.openai.com/account/api-keys .
     
 ## Demo
