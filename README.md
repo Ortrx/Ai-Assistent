@@ -15,7 +15,7 @@ or simply donwload the .zip file.
 
 2. Replace YOUR_API_KEY in line 237,
 
-```bash 
+```javascript 
 const CHATGPT_API_KEY = 'YOUR_API_KEY';
 ```
 with your Open Ai Api Key. I'm poor sorry :( 
